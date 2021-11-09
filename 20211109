@@ -1,0 +1,17 @@
+1. equals는 논리적 동치성을 지켜 재정의해야한다. 아니라면 그대로 두도록 하자.
+
+2. equals를 재정의 했다면, hashCode도 재정의해야한다.
+
+3. hashCode란? - hashmap이나 hashset등 hash를 이용한 컬렉션에서 사용되는 식별자이다.
+재정의하지 않는다면, hash를 사용하는 컬렉션에서 문제가 생길 가능성이 있다. (값을 찾지 못하거나, 조회 성능이 선형적이게 됨)
+
+4. hashmap의 동작 원리
+- put을 하게 되면, key의 hashCode값을 이용하여 인덱스로 Node<K, V>배열에 저장한다.
+이 후 get을 하게 되면 key의 hashCode를 이용하여 배열 인덱스로 바로 접근하여 가져온다. O(1)
+그렇다면 hashCode가 충돌하게 되면 어떻게 될까? put할 때, Node<K, V>배열에 해당 hashCode를 이용한 인덱스 값이 저장되어 있다면, 해당 Node의 다음 Node에 저장한다.
+get할 때는, 해당 hashCode 인덱스의 Node들을 순회하면서 key값이 맞는지 비교하여 value를 반환한다. O(n)
+
+정리
+1. put을 하는 데이터들은 Node<K, V>[]에 저장되고, 저장되는 배열의 인덱스는 key의 hashCode에 따라 정해진다.
+2. hashCode값이 같더라도, Node의 특성을 이용하여 다음 Node에 key, value를 저장한다.
+3. 결과적으로 get()할 때, hashCode가 충돌이 나지 않는다면, O(1), 충돌이 난다면 O(n)의 시간복잡도를 가지게 된다.
