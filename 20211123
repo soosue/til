@@ -1,0 +1,20 @@
+spring security
+
+*filter
+- filter기반으로 이루어짐
+- FilterChain은 매 요청마다 새로 만들어진다.
+- DelegatingFilterProxy가 쓰이는 이유: Filter는 Servlet기술이라서 Bean을 인식하지 못함. 인식할 수 있도록 사용
+- FilterChainProxy를 쓰는 이유: Filter를 하나씩 등록하는 것이 아닌 여러 개를 한 번에 등록할 수 있고, Spring Security의 진입점으로 관리하기가 용이함.
+- SecurityFilterChain: Bean인 Security Filter들을 묶어놓은 것, 여러 묶음이 존재할 수 있고, FilterChainProxy에서 어떤 묶음을 실행할지 정할 수 있다.
+
+*authentication
+- Authentication에는 크게 SecurityContextHolder, SecurityContext, Authentication이 있음.
+- SecurityContextHolder: SecurityContext를 가지고 있으며, 인증 정보를 저장할 방식을 strategy로 정할 수 있음.(기본은 thread local을 이용)
+- SecuritContext: 현재 사용자 인증 정보가 저장되는 곳, thread local이 기본적으로 이용되며, thread local에 저장된 인증 정보는 FilterChainProxy의 finally에서 clear된다.
+
+
+
+그냥 생각
+- this()가 생성자문의 맨 위에 선언되어야 하는 이유는 생성자들 중 근간이 되는 생성자를 먼저 처리하도록 하는게 아닐까?(잊지 말라고)
+- tdd가 쉽지 않다. tdd cycle을 따르다 보면, 새로운 도메인들이 자꾸 등장하게 되는데 새로 등장한 도메인들을 또 tdd로 작성하다보면 이전의 tdd cycle을 까먹을 때가 많다.
+- 메서드 네이밍이 쉽지 않음. 주로 뭔가가 필요할 때 get-을 쓰게 되는데, getter의 느낌이 나서 별로 좋지 않은 것 같다고 생각하고 있었는데 그런 피드백을 받음.
