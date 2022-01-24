@@ -1,0 +1,54 @@
+[원문] https://kotlinlang.org/docs/functions.html#function-usage
+
+* 코틀린에서 함수는 fun 키워드를 이용해서 선언된다.
+fun double(x: Int): Int {
+  return 2 * x
+}
+
+
+* 사용법은 일반적이다.
+val result = double(2)
+
+
+* 인자는 Pascal notation을 사용해 정의된다(name: type)
+인자들은 ,를 이용해 구분되며 반드시 타입이 명시되어야 한다.
+fun powerOf(number: Int, exponent: Int): Int { ... }
+
+cf. Trailing commas를 사용할 수 있다.
+
+
+* 함수 파라미터는 =를 이용해 기본값을 가질 수 있고, 대응하는 인자를 생략했을 때 사용된다. 오버로딩을 줄일 수 있다.
+fun read(
+  b: ByteArray,
+  off: Int = 0,
+  len: Int = b.size,
+) { ... }
+
+
+* 오버라이딩 메서드는 base메서드의 default값을 가져다 사용합니다.
+따라서 default value가 정의된 파라미터의 오버라이딩 메서드에서, default value는 signature에서 꼭 생략되어야합니다.
+open class A {
+  open fun foo(i: Int = 10) { ... }
+}
+class B : A() {
+  override fun foo(i: Int) { ... } // default value가 있으면 안된다.
+}
+
+
+* default parameter가 default value가 없는 parameter 앞에 온 경우, 오직 named arguments를 이용해서만 default value를 사용할 수 있습니다.
+fun foo(
+  bar: Int = 0,
+  baz: Int,
+) { ... }
+foo(baz = 1)
+
+
+* 만약 default parameters의 마지막 인자가 lambda라면, named argument 또는 {}를 이용해서 인자를 건네줄 수 있습니다.
+fun foo(
+  bar: Int = 0,
+  baz: Int = 1,
+  qux: () -> Unit,
+) { ... }
+foo(1) { println("hello") }
+foo(qux = { println("hello") }
+foo { println("hello") }
